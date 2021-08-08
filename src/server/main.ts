@@ -12,7 +12,7 @@ export class Main {
   private app = express();
   private postController = new PostController(this.app);
   constructor() {
-    this.usePlugin();
+    this.setMiddleware();
     this.route();
   }
 
@@ -22,11 +22,15 @@ export class Main {
     });
   }
 
-  private usePlugin() {
+  private setMiddleware() {
     this.app.use(
       "/static",
       express.static(path.join(__dirname, "../../build/static/"))
     );
+
+    this.app.use((req, res, next) => {
+      console.log(req), next();
+    });
   }
 
   private route() {

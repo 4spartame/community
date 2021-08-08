@@ -8,4 +8,27 @@ export class RedisRepository {
   public hset = promisify(this.client.hset).bind(this.client);
   public hkeys = promisify(this.client.hkeys).bind(this.client);
   constructor() {}
+
+  public addPost(postData: { type: string; contents: string }) {
+    this.get("posts").then((postsStr: string) => {
+      const posts = JSON.parse(postsStr) || [];
+      posts.push({
+        ...postData,
+        ownerId: 1,
+        categoryId: 1,
+        comments: [],
+        createTime: Date.now(),
+        updateTime: Date.now(),
+      });
+      return this.set("posts", posts);
+    });
+  }
+
+  public getPosts(start: number, count: number) {
+    this.get("posts").then((postsStr: string) => {
+      const posts = JSON.parse(postsStr) || [];
+    });
+
+    Promise.all;
+  }
 }

@@ -1,4 +1,4 @@
-enum PostType {
+export enum PostType {
   IMAGE = "image",
   YOUTUBE = "youtube",
   NOTICE = "notice",
@@ -8,19 +8,20 @@ export type Post = {
   id: number;
   ownerId: number;
   categoryId: number;
-  content: string;
+  contents: string;
   type: PostType;
   createTime: number;
   updateTime: number;
-  replies: PostReply[];
+  comments: PostComment[];
 };
 
-export type PostReply = {
+export type PostComment = {
   id: number;
   postId: number;
-  reReplyId: number;
+  replyId: number;
+  categoryId: number;
   ownerId: number;
-  content: string;
+  contents: string;
   createTime: number;
   updateTime: number;
 };

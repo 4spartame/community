@@ -1,13 +1,14 @@
 import { Application } from "express";
-import { MySqlRepository } from "../repositories/MySqlRepository";
+import { RedisRepository } from "../repositories/RedisRepository";
 
 export class PostController {
-  private mysql = new MySqlRepository();
+  private redis = new RedisRepository();
   constructor(private app: Application) {
-    this.app.get("/json", async (req, res) => {
-      res.send({ a: 1 });
+    this.app.get("/api/posts", async (req, res) => {});
+    this.app.get("/api/post/:id", async (req, res) => {});
+    this.app.delete("/api/post/:id", async (req, res) => {});
+    this.app.post("/api/post/", async (req, res) => {
+      this.redis.addPost(req.body);
     });
-
-    this.mysql.getSolution();
   }
 }

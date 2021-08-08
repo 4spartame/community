@@ -1,0 +1,89 @@
+// @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+// }
+
+// @media only screen and (min-device-width: 320px) {
+// }
+
+// /* ----------- Retina Screens ----------- */
+// @media screen and (min-device-width: 1200px) {
+// }
+
+$max-width: 1200px;
+$min-width: 760px;
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #eee;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav {
+  width: 300px;
+}
+
+main {
+  @media screen and (min-width: $max-width) {
+    .container {
+      max-width: 1200px;
+    }
+  }
+  .container {
+    height: 100%;
+    background: #fff;
+    margin: auto;
+  }
+}
+.content-input {
+  width: 400px;
+  margin: auto;
+}
+
+.post-list {
+  padding: 30px;
+  text-align: center;
+
+  .post-item {
+    text-align: left;
+    margin-top: 30px;
+
+    @media screen and (min-width: $min-width) {
+      display: flex;
+    }
+
+    .post-contents {
+      flex-basis: 0;
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+
+    .post-comment {
+      flex-basis: 0;
+      flex-grow: 1;
+      flex-shrink: 1;
+      .post-comment-form {
+        display: flex;
+      }
+    }
+    .post-comment-item {
+      &.is-reply {
+        padding-left: 20px;
+      }
+    }
+    .post-comment-reply-form {
+      display: flex;
+    }
+  }
+}
+
+.input {
+  width: 100%;
+}
