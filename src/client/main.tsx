@@ -1,4 +1,3 @@
-import store from "./viewModel/Store";
 import './css/index.scss';
 import { ViewImpl } from './View';
 import { ViewCommand } from "./commands/ViewCommand";
@@ -11,5 +10,6 @@ export class Main {
   private view = new ViewImpl(this.viewCommand)
   constructor() {
     this.view.mount(document.querySelector("#root") as HTMLElement);
+    this.postModel.subscribe(this.view);
   }
 }

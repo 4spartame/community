@@ -1,56 +1,31 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Post, PostType } from "../model";
+import {
+  createAction,
+  createReducer,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { Post, PostEvent, PostType } from "../model";
 
-export interface CounterState {
+export interface PostState {
   posts: Post[];
 }
 
-const initialState: CounterState = {
+const initialState: PostState = {
   posts: [],
 };
 
-export const PostSlice = createSlice({
-  name: "post",
-  initialState,
-  reducers: {
-    addPost: (
-      state,
-      { payload }: PayloadAction<{ type: PostType; contents: string }>
-    ) => {
-      const id = state.posts.length + 1;
-      const post = {
-        ...payload,
-        id,
-        ownerId: 1,
-        categoryId: 1,
-        comments: [],
-        createTime: Date.now(),
-        updateTime: Date.now(),
-      };
-    },
-    addComment: (
-      state,
-      {
-        payload,
-      }: PayloadAction<{ postId: number; contents: string; replyId?: number }>
-    ) => {
-      const { postId, contents } = payload;
-      const comments =
-        state.posts.find(({ id }) => id === postId)?.comments || [];
-      const id = comments.length + 1;
-      const comment = {
-        id,
-        ownerId: 1,
-        categoryId: 1,
-        replyId: 0,
-        createTime: Date.now(),
-        updateTime: Date.now(),
-        ...payload,
-      };
-    },
-  },
+export const updatedPosts = createAction<Post[]>(PostEvent.UPDATED_POSTS);
+export const addComment =
+  createAction<{ contents: string; postId: number; replyId?: number }>(
+    "addComment"
+  );
+export const addPost =
+  createAction<{ contents: string; type: PostType }>("addPost");
+
+const PostReducer = createReducer(initialState, (builder) => {
+  builder.addCase(updatedPosts, (state, action: PayloadAction<Post[]>) => {
+    state.posts = action.payload;
+  });
 });
 
-export const { addPost, addComment } = PostSlice.actions;
-
-export default PostSlice.reducer;
+export default PostReducer;

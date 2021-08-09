@@ -4,7 +4,11 @@ export interface View {
 
 export class Model {
   private views: View[] = [];
-  protected trigger(event: string, payload?: any) {
+
+  public subscribe(view: View) {
+    this.views.push(view);
+  }
+  public trigger(event: string, payload?: any) {
     this.views.forEach((view) => view.render(event, payload));
   }
 }

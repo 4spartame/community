@@ -1,6 +1,6 @@
 import { ChangeEvent, Component } from "react";
 import { RootState } from "../../viewModel/Store";
-import { Post, PostComment } from "../../viewModel/structure";
+import { Post, PostComment } from "../../model/structure";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { addComment } from "../../viewModel/PostReducer";
@@ -48,7 +48,9 @@ class PostCommentItem extends Component<Props> {
   }
 
   private addComment = () => {
-    console.log(this.props.comment.id);
+    if (!this.state.contents) {
+      return;
+    }
     this.props.dispatch(addComment({
       postId: this.props.post.id,
       replyId: this.props.comment.id,

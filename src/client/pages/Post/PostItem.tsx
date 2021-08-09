@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { addComment } from "../../viewModel/PostReducer";
 import { RootState } from "../../viewModel/Store";
-import { Post } from "../../viewModel/structure";
+import { Post } from "../../model/structure";
 import PostCommentItem from "./PostCommentItem";
 
 type Props = {
@@ -44,6 +44,9 @@ class PostItem extends Component<Props> {
   }
 
   private addComment = () => {
+    if (!this.state.contents) {
+      return;
+    }
     this.props.dispatch(addComment({
       postId: this.props.post.id,
       contents: this.state.contents

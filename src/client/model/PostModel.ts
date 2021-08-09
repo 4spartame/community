@@ -1,5 +1,6 @@
 import { Model } from "./Model";
 import { Post, PostComment } from "./structure";
+import deepcopy from "deepcopy";
 
 export class PostCollection {
   private posts: Post[] = [];
@@ -25,14 +26,15 @@ export class PostCollection {
   }
 
   private sortComment(comments: PostComment[]) {
-    const noReply = comments.filter(({ replyId }) => !!replyId);
+    const noReply = comments.filter(({ replyId }) => !replyId);
     return noReply.reduce((arr, comment) => {
       const replies = comments.filter(({ replyId }) => replyId === comment.id);
       return [...arr, comment, ...replies];
     }, [] as PostComment[]);
   }
 
-  public addComment(postId: number, comment: PostComment) {
+  public addComment(comment: PostComment) {
+    const postId = comment.postId;
     const post = this.posts.find(({ id }) => id === postId);
 
     if (!post) return;
@@ -40,16 +42,32 @@ export class PostCollection {
   }
 
   public addPost(post: Post) {
-    this.posts.push(post);
+    this.posts.unshift({ ...post, comments: [] });
   }
 
   public getPosts() {
-    return this.posts;
+    return deepcopy(this.posts);
   }
 
   public getPostById(_id: number) {
-    return this.posts.filter(({ id }) => id === _id);
+    return deepcopy(this.posts.filter(({ id }) => id === _id));
   }
+
+  public getLastCommentId() {
+    let lastId = 0;
+
+    this.posts.forEach((post) => {
+      post.comments.forEach((comment) => {
+        lastId = Math.max(lastId, comment.id);
+      });
+    });
+
+    return lastId;
+  }
+}
+
+export enum PostEvent {
+  UPDATED_POSTS = "updatedPosts",
 }
 
 export class PostModel extends Model {
@@ -59,13 +77,20 @@ export class PostModel extends Model {
     super();
   }
 
-  public addComment(postId: number, comment: PostComment) {
-    this.postCollection.addComment(postId, comment);
-    this.trigger("updatedPosts", this.postCollection.getPosts());
+  public getNextPostId() {
+    return this.postCollection.getPosts().length + 1;
+  }
+  public getNextCommendId() {
+    return this.postCollection.getLastCommentId() + 1;
+  }
+
+  public addComment(comment: PostComment) {
+    this.postCollection.addComment(comment);
+    this.trigger(PostEvent.UPDATED_POSTS, this.postCollection.getPosts());
   }
 
   public addPost(post: Post) {
     this.postCollection.addPost(post);
-    this.trigger("updatedPosts", this.postCollection.getPosts());
+    this.trigger(PostEvent.UPDATED_POSTS, this.postCollection.getPosts());
   }
 }

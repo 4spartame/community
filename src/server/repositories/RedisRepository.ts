@@ -10,25 +10,67 @@ export class RedisRepository {
   constructor() {}
 
   public addPost(postData: { type: string; contents: string }) {
-    this.get("posts").then((postsStr: string) => {
-      const posts = JSON.parse(postsStr) || [];
-      posts.push({
-        ...postData,
-        ownerId: 1,
-        categoryId: 1,
-        comments: [],
-        createTime: Date.now(),
-        updateTime: Date.now(),
+    return this.get("posts")
+      .then((postsStr: string) => {
+        const posts = JSON.parse(postsStr) || [];
+        const post = {
+          ...postData,
+          id: posts.length + 1,
+          ownerId: 1,
+          categoryId: 1,
+          createTime: Date.now(),
+          updateTime: Date.now(),
+        };
+        posts.push(post);
+        return Promise.all([this.set("posts", JSON.stringify(posts)), post]);
+      })
+      .then(([_, post]: any) => {
+        return post;
       });
-      return this.set("posts", posts);
-    });
+  }
+
+  public addComment({
+    replyId,
+    ...commentData
+  }: {
+    postId: number;
+    replyId?: number;
+    contents: string;
+  }) {
+    return this.get("comments")
+      .then((commentsStr: string) => {
+        const comments = JSON.parse(commentsStr) || [];
+        const comment = {
+          id: this.getLastId(comments) + 1,
+          ownerId: 1,
+          categoryId: 1,
+          createTime: Date.now(),
+          updateTime: Date.now(),
+          ...commentData,
+          replyId: replyId || 0,
+        };
+        comments.push(comment);
+        return Promise.all([
+          this.set("comments", JSON.stringify(comments)),
+          comment,
+        ]);
+      })
+      .then(([_, comment]: any) => {
+        return comment;
+      });
+  }
+
+  private getLastId<T extends { id: number }>(list: T[]) {
+    return list.reduce((acc, tar) => {
+      return Math.max(tar.id, acc);
+    }, 0);
   }
 
   public getPosts(start: number, count: number) {
-    this.get("posts").then((postsStr: string) => {
+    return this.get("posts").then((postsStr: string) => {
       const posts = JSON.parse(postsStr) || [];
-    });
 
-    Promise.all;
+      return posts;
+    });
   }
 }

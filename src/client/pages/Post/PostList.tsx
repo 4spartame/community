@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { addPost } from '../../viewModel/PostReducer';
 import { RootState } from '../../viewModel/Store';
-import { PostType } from "../../viewModel/structure";
+import { PostType } from "../../model/structure";
 import PostItem from './PostItem';
 
 type Props = {
@@ -20,9 +20,6 @@ class PostList extends Component<Props> {
     return (
       <div className="post-list">
         <div>
-          게시판 목록
-        </div>
-        <div>
           <button onClick={this.selectPostType(PostType.IMAGE)}>image</button>
           <button onClick={this.selectPostType(PostType.YOUTUBE)}>youtube</button>
           <button onClick={this.selectPostType(PostType.NOTICE)}>notice</button>
@@ -32,7 +29,7 @@ class PostList extends Component<Props> {
             (postType === PostType.IMAGE) ? (
               <div>
                 <h2>이미지</h2>
-                <input type="file"></input>
+                <input type="file" multiple={true} name="image" accept="image/*" onChange={this.onChangeFile}></input>
               </div>) : null
           }
           {
@@ -65,6 +62,16 @@ class PostList extends Component<Props> {
     this.setState({ contents: value });
   }
 
+  private onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files as FileList;
+
+    var formData = new FormData();
+    for (var x = 0; x < files.length; x++) {
+      formData.append('file' + x, files.item(x) as File);
+    }
+    this.setState({ contents: formData });
+  }
+
   private selectPostType = (postType: PostType) => () => {
     this.setState({ postType });
   }
@@ -73,6 +80,7 @@ class PostList extends Component<Props> {
     if (!this.state.contents) {
       return;
     }
+    console.log(this.state.contents);
     this.props.dispatch(addPost({ type: this.state.postType, contents: this.state.contents }));
     this.setState({ contents: "" });
   }
