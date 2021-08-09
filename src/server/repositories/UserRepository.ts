@@ -9,7 +9,7 @@ const pool = mysql.createPool({
   multipleStatements: true,
 });
 
-export class MySqlRepository {
+export class UserRepository {
   private connection = pool.then((pool) => {
     return pool.getConnection();
   });

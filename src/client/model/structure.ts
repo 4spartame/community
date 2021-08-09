@@ -25,3 +25,5 @@ export type PostComment = {
   createTime: number;
   updateTime: number;
 };
+
+export type User = {};

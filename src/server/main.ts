@@ -1,9 +1,12 @@
-import express from "express";
+import express, { Request } from "express";
 import path from "path";
 import util from "util";
 import fs from "fs";
 import { PostController } from "./controller/PostController";
 import fileUpload from "express-fileupload";
+import sessions from "express-session";
+import cookieParser from "cookie-parser";
+import { UserController } from "./controller/UserController";
 const readFileAsync = util.promisify(fs.readFile);
 
 const DEFAULT_PORT = 8080;
@@ -12,10 +15,12 @@ const DEFAULT_HOST = "0.0.0.0";
 export class Main {
   private app = express();
   private postController!: PostController;
+  private userController!: UserController;
   constructor() {
     this.setMiddleware();
     this.route();
     this.postController = new PostController(this.app);
+    this.userController = new UserController(this.app);
   }
 
   public listen() {
@@ -34,6 +39,17 @@ export class Main {
       next();
     });
 
+    const oneDay = 1000 * 60 * 60 * 24;
+    this.app.use(
+      sessions({
+        secret: "mysecretkey",
+        saveUninitialized: true,
+        cookie: { maxAge: oneDay },
+        resave: false,
+      })
+    );
+    this.app.use(cookieParser());
+
     this.app.use(
       "/static",
       express.static(path.join(__dirname, "../../build/static/"))
@@ -48,11 +64,6 @@ export class Main {
 
     // parse application/json
     this.app.use(express.json());
-
-    // this.app.use((req, res, next) => {
-    //   console.log(req);
-    //   next();
-    // });
 
     this.app.use(
       fileUpload({
