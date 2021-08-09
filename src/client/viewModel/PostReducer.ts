@@ -15,6 +15,7 @@ const initialState: PostState = {
 };
 
 export const updatedPosts = createAction<Post[]>(PostEvent.UPDATED_POSTS);
+export const fetchPosts = createAction("fetchPosts");
 export const addComment =
   createAction<{ contents: string; postId: number; replyId?: number }>(
     "addComment"

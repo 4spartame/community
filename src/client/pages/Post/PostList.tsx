@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { addPost } from '../../viewModel/PostReducer';
+import { addPost, fetchPosts } from '../../viewModel/PostReducer';
 import { RootState } from '../../viewModel/Store';
 import { PostType } from "../../model/structure";
 import PostItem from './PostItem';
@@ -13,6 +13,11 @@ type Props = {
 
 class PostList extends Component<Props> {
   public state = { postType: PostType.NOTICE, contents: "" };
+
+  public componentDidMount() {
+    this.props.dispatch(fetchPosts());
+  }
+
   public render() {
     const { postType, contents } = this.state;
     const { posts } = this.props.state.post;

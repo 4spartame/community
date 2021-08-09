@@ -93,4 +93,8 @@ export class PostModel extends Model {
     this.postCollection.addPost(post);
     this.trigger(PostEvent.UPDATED_POSTS, this.postCollection.getPosts());
   }
+  public addPostsAndComments(posts: any, comments: any) {
+    this.postCollection.addPostsAndComments(posts, comments);
+    this.trigger(PostEvent.UPDATED_POSTS, this.postCollection.getPosts());
+  }
 }

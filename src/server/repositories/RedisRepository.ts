@@ -66,11 +66,14 @@ export class RedisRepository {
     }, 0);
   }
 
-  public getPosts(start: number, count: number) {
-    return this.get("posts").then((postsStr: string) => {
-      const posts = JSON.parse(postsStr) || [];
+  public getPosts() {
+    return Promise.all([this.get("posts"), this.get("comments")]).then(
+      ([postsStr, commentsStr]) => {
+        const posts = JSON.parse(postsStr) || [];
+        const comments = JSON.parse(commentsStr) || [];
 
-      return posts;
-    });
+        return { posts, comments };
+      }
+    );
   }
 }

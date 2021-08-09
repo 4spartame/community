@@ -50,4 +50,13 @@ export class PostController {
 
     this.model.addComment(comment);
   }
+
+  public async fetchPosts() {
+    const result = await fetch(`${API_PATH}/posts`, {
+      method: "GET",
+    });
+    const { posts, comments } = await result.json();
+
+    this.model.addPostsAndComments(posts, comments);
+  }
 }
