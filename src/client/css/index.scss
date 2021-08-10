@@ -11,19 +11,16 @@
 $max-width: 1200px;
 $min-width: 760px;
 
-body,
 html {
-  height: 100%;
-  margin: 0;
-  padding: 0;
   background: #eee;
 }
 
-ul,
-li {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+html,
+body,
+#root,
+main,
+form {
+  height: 100%;
 }
 
 nav {
@@ -38,7 +35,6 @@ main {
   }
   .container {
     height: 100%;
-    background: #fff;
     margin: auto;
   }
 }
@@ -86,4 +82,26 @@ main {
 
 .input {
   width: 100%;
+}
+
+.join-form {
+  @media screen and (min-width: $min-width) {
+    position: absolute;
+    height: 500px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
+  width: 300px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+
+  button[type="submit"] {
+    width: 100%;
+  }
 }

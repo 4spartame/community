@@ -55,6 +55,7 @@ class Login extends Component<Props> {
 
   };
   private signUp: MouseEventHandler<HTMLButtonElement> = (e) => {
+    this.props.history.push("/page/join");
   };
 
   private changeValue: ChangeEventHandler<HTMLInputElement> = (e) => {

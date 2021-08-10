@@ -1,9 +1,4 @@
-import {
-  createAction,
-  createReducer,
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { User, UserEvent } from "../model";
 
 export interface UserState {
@@ -14,6 +9,8 @@ const initialState: UserState = {};
 
 export const login =
   createAction<{ userId: string; password: string }>("login");
+export const join =
+  createAction<Omit<User, "joinDate" | "id" | "level">>("join");
 export const updatedLoginSession = createAction<User>(
   UserEvent.UPDATED_LOGIN_SESSION
 );
