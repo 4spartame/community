@@ -23,6 +23,9 @@ class GNB extends Component<Props> {
           <Link to="/page/login">로그인</Link>
         </li>
         <li>
+          <Link to="/page/chat">채팅</Link>
+        </li>
+        <li>
           <Link to="/page/join">회원가입</Link>
         </li>
       </ul>

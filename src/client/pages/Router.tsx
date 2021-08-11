@@ -8,6 +8,7 @@ import {
 import { Dispatch } from "redux";
 import { RootState } from "../viewModel/Store";
 import { getLogin } from "../viewModel/UserReducer";
+import Chat from "./Chat/Chat";
 import GNB from "./GNB";
 import MemberList from "./Member/MemberList";
 import MemberView from "./Member/MemberView";
@@ -43,6 +44,9 @@ class RouterApp extends Component<Props> {
         </Route>
         <Route path="/page/join">
           <Join></Join>
+        </Route>
+        <Route path="/page/chat">
+          <Chat></Chat>
         </Route>
       </Switch>
       <GNB></GNB>

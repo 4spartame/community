@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { User } from "../../common/structure";
-import { SqlRepository } from "../repositories/SqlRepository";
+import { UserRepository } from "../repositories/UserRepository";
 
 declare module "express-session" {
   interface SessionData {
@@ -12,7 +12,7 @@ const userId = "user";
 const password = "0000";
 
 export class UserController {
-  private model = new SqlRepository();
+  private model = new UserRepository();
 
   constructor(private app: Application) {
     this.app.get("/api/login", this.getLogin);
@@ -21,7 +21,6 @@ export class UserController {
   }
 
   private readonly getLogin = async (req: Request, res: Response) => {
-    console.log(req.session);
     if (req.session.loginId) {
       const { password: _, ...user } = await this.model.getUserById(
         req.session.loginId
