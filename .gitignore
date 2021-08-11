@@ -12,6 +12,7 @@
 /build
 
 /data
+/sessions
 
 # misc
 .DS_Store

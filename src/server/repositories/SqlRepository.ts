@@ -26,6 +26,28 @@ export class SqlRepository {
       });
   }
 
+  public getUserById(id: number) {
+    return this.connection
+      .then((con) => {
+        return con.query(`SELECT * FROM user WHERE id='${id}'`);
+      })
+      .then((result) => {
+        return result[0];
+      });
+  }
+
+  public verifyUser(userId: string, password: string) {
+    return this.connection
+      .then((con) => {
+        return con.query(
+          `SELECT * FROM user WHERE userid='${userId}' AND password='${password}'`
+        );
+      })
+      .then((result) => {
+        return result[0];
+      });
+  }
+
   public addUser(user: Omit<User, "id" | "level" | "joinDate">) {
     let querySet = "";
     const makeUser = {

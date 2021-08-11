@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Store } from "redux";
 import { View } from "./model/Model";
-import PostList from "./pages/Post/PostList";
 import { Command } from "./commands/Command";
 import initStore from "./viewModel/Store";
 
@@ -23,6 +22,10 @@ export class ViewImpl implements View {
       </React.StrictMode>,
       root,
     );
+  }
+
+  public redirect() {
+
   }
 
   public render(type: string, payload: any) {

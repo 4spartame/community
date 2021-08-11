@@ -4,7 +4,7 @@ import { SqlRepository } from "../repositories/SqlRepository";
 
 declare module "express-session" {
   interface SessionData {
-    userid: string;
+    loginId: number;
   }
 }
 
@@ -15,38 +15,48 @@ export class UserController {
   private model = new SqlRepository();
 
   constructor(private app: Application) {
-    // this.app.use((req, res, next) => {
-    //   if (!req.session.userid) {
-    //     res.redirect("/page/login");
-    //   } else {
-    //     next();
-    //   }
-    // });
-
-    this.app.get("/api/login", () => {
-      // TODO: 세션 로그인 정보 반환
-    });
-
+    this.app.get("/api/login", this.getLogin);
     this.app.post("/api/login", this.login);
-    this.app.post("/api/join", async (req: Request, res: Response) => {
-      const { userId, name, age, password }: User = req.body;
-
-      // TODO 필수정보 없을때 알러트
-      const user = await this.model.addUser({
-        userId,
-        name,
-        age,
-        password,
-      });
-      res.send({ success: true, user });
-    });
+    this.app.post("/api/join", this.join);
   }
 
-  private readonly login = (req: Request, res: Response) => {
-    if (req.body.userId == userId && req.body.password == password) {
-      const session = req.session;
-      session.userid = req.body.userId;
-      res.send({ success: true, user: { userId } });
+  private readonly getLogin = async (req: Request, res: Response) => {
+    console.log(req.session);
+    if (req.session.loginId) {
+      const { password: _, ...user } = await this.model.getUserById(
+        req.session.loginId
+      );
+      res.send({ success: true, user });
+    } else {
+      res.send({ success: false });
+    }
+  };
+
+  private readonly join = async (req: Request, res: Response) => {
+    const { userId, name, age, password }: User = req.body;
+
+    // TODO 필수정보 없을때 알러트
+    const user = await this.model.addUser({
+      userId,
+      name,
+      age,
+      password,
+    });
+    req.session.loginId = user.id;
+    res.send({ success: true, user });
+  };
+
+  private readonly login = async (req: Request, res: Response) => {
+    const { userId, password } = req.body;
+    const { password: _, ...user } = await this.model.verifyUser(
+      userId,
+      password
+    );
+
+    if (user) {
+      req.session.loginId = user.id;
+      console.log(req.session);
+      res.send({ success: true, user });
     } else {
       res.send({ success: false });
     }

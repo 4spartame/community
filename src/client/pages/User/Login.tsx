@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { RootState } from "../../viewModel/Store";
 import { login } from "../../viewModel/UserReducer";
-import { Redirect, withRouter, RouteComponentProps } from "react-router-dom";
+import { Redirect, Link, withRouter, RouteComponentProps } from "react-router-dom";
 
 type Props = {
   state: RootState,
@@ -28,19 +28,22 @@ class Login extends Component<Props> {
     return <main>
       <div className="container">
         <form>
-          <div>
-            <label htmlFor="userId">user id</label>
-            <input type="text" name="userId" id="userId" onChange={this.changeValue} />
-          </div>
-          <div>
-            <label htmlFor="password">password</label>
-            <input type="password" name="password" id="password" onChange={this.changeValue} />
-          </div>
-          <div>
-            <button type="submit" onClick={this.login}>login</button>
-            <button onClick={this.signUp}>sign up</button>
-            <button onClick={this.findPassword}>find password</button>
-          </div>
+          <fieldset className="login-form">
+            <div className="field">
+              <label htmlFor="userId" className="label">아이디</label>
+              <input type="text" className="input" name="userId" id="userId" onChange={this.changeValue} />
+            </div>
+            <div className="field">
+              <label htmlFor="password" className="label">비밀번호</label>
+              <input type="password" className="input" name="password" id="password" onChange={this.changeValue} />
+            </div>
+            <div className="field">
+              <button type="submit" className="button is-success" onClick={this.login}>login</button>
+            </div>
+            <div>
+              <Link to="/page/join">join us</Link>
+            </div>
+          </fieldset>
         </form>
       </div>
     </main>
@@ -51,12 +54,6 @@ class Login extends Component<Props> {
     this.props.dispatch(login({ userId: this.state.userId, password: this.state.password }));
 
   }
-  private findPassword: MouseEventHandler<HTMLButtonElement> = (e) => {
-
-  };
-  private signUp: MouseEventHandler<HTMLButtonElement> = (e) => {
-    this.props.history.push("/page/join");
-  };
 
   private changeValue: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;

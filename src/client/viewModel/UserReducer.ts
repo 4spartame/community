@@ -11,6 +11,7 @@ export const login =
   createAction<{ userId: string; password: string }>("login");
 export const join =
   createAction<Omit<User, "joinDate" | "id" | "level">>("join");
+export const getLogin = createAction("getLogin");
 export const updatedLoginSession = createAction<User>(
   UserEvent.UPDATED_LOGIN_SESSION
 );

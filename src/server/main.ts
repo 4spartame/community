@@ -7,6 +7,8 @@ import fileUpload from "express-fileupload";
 import sessions from "express-session";
 import cookieParser from "cookie-parser";
 import { UserController } from "./controller/UserController";
+import FileStore from "session-file-store";
+import cors from "cors";
 const readFileAsync = util.promisify(fs.readFile);
 
 const DEFAULT_PORT = 8080;
@@ -30,25 +32,23 @@ export class Main {
   }
 
   private setMiddleware() {
-    this.app.all("/*", function (req, res, next) {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header(
-        "Access-Control-Allow-Headers",
-        "X-Requested-With, Content-Type, Origin, Accept"
-      );
-      next();
-    });
+    this.app.use(
+      cors({
+        origin: true,
+        credentials: true,
+      })
+    );
 
-    const oneDay = 1000 * 60 * 60 * 24;
+    this.app.use(cookieParser());
     this.app.use(
       sessions({
         secret: "mysecretkey",
         saveUninitialized: true,
-        cookie: { maxAge: oneDay },
+        cookie: { secure: false },
         resave: false,
+        store: new (FileStore(sessions))(),
       })
     );
-    this.app.use(cookieParser());
 
     this.app.use(
       "/static",

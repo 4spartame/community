@@ -1,0 +1,31 @@
+.join-form,
+.login-form {
+  @media screen and (min-width: $min-width) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 200px;
+    margin: auto;
+  }
+
+  width: 300px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+
+  button[type="submit"] {
+    width: 100%;
+  }
+}
+
+.join-form {
+  height: 500px;
+}
+
+.login-form {
+  height: 290px;
+  @media screen and (min-width: $min-width) {
+    top: 300px;
+  }
+}

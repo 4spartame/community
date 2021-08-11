@@ -1,0 +1,108 @@
+$wide-size: 1600px;
+$wide-height: 1000px;
+$common-size: 1200px;
+$common-height: 800px;
+$mobile-size: 1050px;
+$mobile-height: 100%;
+
+.member-view {
+  height: 100%;
+}
+
+.member-summary {
+  position: fixed;
+  width: 100%;
+  height: $mobile-height;
+
+  .member-summary-container {
+    position: relative;
+    margin: auto;
+    height: 100%;
+  }
+  .member-name {
+    width: 00px;
+  }
+
+  .member-thumbnail {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background: #fff;
+    img {
+      width: 100%;
+    }
+  }
+
+  .member-image {
+    height: 80%;
+    background: #0dd;
+    img {
+      width: 100%;
+    }
+  }
+
+  @media screen and (min-width: $common-size) {
+    height: $common-height;
+    .member-summary-container {
+      max-width: $common-size;
+    }
+  }
+
+  @media screen and (min-width: $wide-size) {
+    height: $wide-height;
+    .member-summary-container {
+      max-width: $wide-size;
+    }
+
+    .member-thumbnail {
+      width: 60%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    .member-image {
+      position: absolute;
+      width: 60%;
+      height: 100%;
+      right: 0;
+      background: #0dd;
+    }
+  }
+}
+
+.member-detail {
+  top: $mobile-height;
+  width: 100%;
+  position: absolute;
+
+  @media screen and (min-width: $common-size) {
+    top: $common-height;
+  }
+
+  @media screen and (min-width: $wide-size) {
+    top: $wide-height;
+  }
+}
+
+.member-desc {
+  background: #444;
+  color: #fff;
+
+  .container {
+    display: flex;
+
+    .member-desc-part {
+      flex-basis: 0;
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+  }
+}
+
+.member-relationship {
+  background: #444;
+  .member-relationship-form {
+    display: flex;
+  }
+}

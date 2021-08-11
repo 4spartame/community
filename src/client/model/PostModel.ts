@@ -10,6 +10,11 @@ export class PostCollection {
     this.groupComment(posts, comments);
   }
 
+  public replacePostsAndComments(posts: any, comments: any) {
+    this.posts = [];
+    this.addPostsAndComments(posts, comments);
+  }
+
   private groupComment(posts: Post[], comments: PostComment[]) {
     const processedPost = posts.map((post) => {
       const filteredComments = comments.filter(
@@ -93,8 +98,8 @@ export class PostModel extends Model {
     this.postCollection.addPost(post);
     this.trigger(PostEvent.UPDATED_POSTS, this.postCollection.getPosts());
   }
-  public addPostsAndComments(posts: any, comments: any) {
-    this.postCollection.addPostsAndComments(posts, comments);
+  public replacePostsAndComments(posts: any, comments: any) {
+    this.postCollection.replacePostsAndComments(posts, comments);
     this.trigger(PostEvent.UPDATED_POSTS, this.postCollection.getPosts());
   }
 }

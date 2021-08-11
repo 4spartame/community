@@ -57,6 +57,6 @@ export class PostController {
     });
     const { posts, comments } = await result.json();
 
-    this.model.addPostsAndComments(posts, comments);
+    this.model.replacePostsAndComments(posts, comments);
   }
 }
